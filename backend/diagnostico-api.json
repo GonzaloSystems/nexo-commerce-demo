@@ -1,0 +1,43 @@
+{
+  "at": "2026-10-28T07:22:40+00:00",
+  "providers": {
+    "keepa": {
+      "configured": false,
+      "missing": [
+        "KEEPA_API_KEY"
+      ]
+    },
+    "sp-api": {
+      "configured": false,
+      "missing": [
+        "SP_API_CLIENT_ID",
+        "SP_API_CLIENT_SECRET",
+        "SP_API_REFRESH_TOKEN"
+      ]
+    }
+  },
+  "authenticated_connection_verified": false,
+  "note": "Configurado no significa autenticado. Solo una sincronización correcta verifica el acceso real.",
+  "probes": [
+    {
+      "provider": "keepa",
+      "at": "2026-10-28T07:22:40+00:00",
+      "test": "unauthenticated_reachability_only",
+      "authenticated": false,
+      "products_received": 0,
+      "endpoint_reachable": true,
+      "http_status": 400,
+      "result": "http_error"
+    },
+    {
+      "provider": "sp-api",
+      "at": "2026-10-28T07:22:40+00:00",
+      "test": "unauthenticated_reachability_only",
+      "authenticated": false,
+      "products_received": 0,
+      "endpoint_reachable": true,
+      "http_status": 403,
+      "result": "authentication_required"
+    }
+  ]
+}
