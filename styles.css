@@ -26,3 +26,71 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
  dialog{max-height:calc(100dvh - 32px)}
 }
 @media(max-width:380px){.mock-row>.positive{display:none}.mock-metrics strong{font-size:21px}.market-tabs{flex-wrap:wrap}.app-heading h1{font-size:25px}.hero-note{align-items:flex-start}}
+/* Real product research: photography, publication identity and cross-market links. */
+.dashboard .product-cell{gap:18px;min-width:310px;max-width:420px}
+.photo-button{display:grid;place-items:center;background:#fff;border:1px solid #e5ece9;border-radius:12px;width:100px;height:100px;padding:5px;flex-shrink:0;transition:border-color .15s,transform .15s}
+.photo-button:hover{border-color:#72b69b;transform:translateY(-2px)}
+.real-product-photo{display:block;width:88px;height:88px;object-fit:contain;mix-blend-mode:multiply}
+.product-info{min-width:0}.product-brand{display:block;color:#6b7d7c;font-size:10px;font-weight:650;letter-spacing:.8px;text-transform:uppercase;margin-bottom:6px}
+.dashboard .product-name{font-size:14px;white-space:normal;line-height:1.35;max-width:260px;letter-spacing:-.3px}
+.dashboard .product-cell small{font-size:10px;margin-top:6px}
+.listing-link{display:inline-flex;align-items:center;gap:6px;color:var(--green);font-size:11px;font-weight:650;min-height:32px;margin-top:6px;text-decoration:underline;text-decoration-color:#b5d6c8;text-underline-offset:3px}
+.listing-link:hover{text-decoration-color:var(--green)}
+.price-note{display:block;font-size:9px;color:var(--muted);margin-top:5px;font-weight:400}
+.pending-value{font-size:11px;color:#7c898a;background:#f2f5f4;border:1px solid #e6ece9;padding:5px 8px;border-radius:5px;display:inline-block}
+.other-price{color:#1a65a5;font-weight:550;font-size:12px}
+.real-detail-hero{display:grid;grid-template-columns:220px 1fr;gap:30px;align-items:center;margin-top:15px}
+.detail-photo-wrap{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;display:grid;place-items:center;height:220px}
+.detail-photo-wrap img{width:100%;height:185px;object-fit:contain}
+.real-detail-hero h2{font-size:32px;font-weight:600;letter-spacing:-1px;margin-top:10px}
+.real-detail-hero p{font-size:12px;margin-top:13px;margin-bottom:16px}
+.real-detail-hero .detail-save{display:flex;min-height:42px;font-size:11px;padding:10px 14px;margin-top:18px}
+.detail-section-title{font-size:17px;font-weight:600;letter-spacing:-.4px;margin-top:32px;margin-bottom:18px}
+.retailer-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.retailer-offer{border:1px solid var(--line);border-radius:12px;display:flex;align-items:center;gap:12px;padding:18px;flex-wrap:wrap;background:#fff}
+.retailer-offer:hover{border-color:#72b69b;background:#fbfefc}
+.retailer-offer img{width:75px;height:26px;object-fit:contain}.retailer-offer>div{margin-left:auto}.retailer-offer small{display:block;color:var(--muted);font-size:9px}.retailer-offer strong{font-size:19px;letter-spacing:-.6px}.retailer-offer>span{font-size:16px;color:var(--green)}
+.price-comparison-note{font-size:11px;color:var(--green);background:#eef8f2;border:1px solid #dfefe4;padding:14px 17px;border-radius:8px;margin-top:14px}.price-comparison-note strong{display:block;color:var(--muted);font-size:10px;font-weight:400;margin-top:4px}
+.detail-estimates{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;border-block:1px solid var(--line);margin-top:25px;padding-block:20px}.detail-estimates span{font-size:10px;color:var(--muted);display:block}.detail-estimates strong{display:block;font-size:20px;letter-spacing:-.6px;font-weight:550;margin-top:8px}
+.product-source{font-size:11px;margin-top:22px;border-top:1px solid var(--line);padding-top:16px}.product-source summary{cursor:pointer;font-weight:600}.product-source p{margin-top:12px}.product-source a{display:inline-block;color:var(--green);text-decoration:underline;margin-top:10px}
+.model-intro{font-size:13px;margin-top:18px}.model-upload{display:block;border:1px dashed #94bdad;border-radius:10px;padding:20px;margin-top:24px}.model-upload input{height:auto;padding:10px;font-size:12px}.model-feedback{font-size:12px;margin-top:18px;background:#edf5f0;border-radius:8px;padding:16px;color:var(--ink)}
+.hero-real-product{display:flex;align-items:center;justify-content:center;gap:26px;padding:20px 10px;margin-top:15px;background:#f8faf9;border-radius:10px}
+.hero-real-product img{width:155px;height:155px;object-fit:contain;mix-blend-mode:multiply}
+.hero-real-product>div>strong{font-size:26px;letter-spacing:-1px;line-height:1.15;display:block;margin-top:14px}
+.hero-real-product a{font-size:10px;display:block;color:var(--green);text-decoration:underline;margin-top:14px}
+.mock-photo{object-fit:contain}.market-price-bars{margin-top:24px}.market-price-bars>div{display:grid;grid-template-columns:84px 1fr 64px;align-items:center;gap:8px;font-size:10px;margin-bottom:12px}.market-price-bars i{height:20px;background:#648fe4;border-radius:4px;display:block}.market-price-bars>div:nth-child(2) i{background:#18a47b}.market-price-bars strong{font-weight:550;text-align:right}.market-price-bars>small{font-size:9px;color:var(--muted)}
+@media(max-width:1150px){.dashboard .product-cell{min-width:290px}.dashboard td{padding-inline:12px}.photo-button{width:84px;height:90px}.real-product-photo{width:75px;height:78px}}
+@media(max-width:560px){
+ .dashboard .results-panel .table-scroll{overflow:visible;outline-offset:-4px}
+ .dashboard table,.dashboard tbody{display:block;white-space:normal}
+ .dashboard thead{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+ .dashboard tbody tr{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);padding:20px 18px;gap:0 16px;border-top:1px solid var(--line)}
+ .dashboard tbody td{display:block;border:0;padding:12px 0;font-size:13px;min-width:0}
+ .dashboard tbody td:first-child{grid-column:1/-1;padding-top:0;padding-bottom:18px}
+ .dashboard tbody td:not(:first-child):not(:last-child):before{display:block;color:var(--muted);font-size:9px;margin-bottom:7px;font-weight:400}
+ .dashboard tbody td:nth-child(2):before{content:'Precio de referencia · MXN'}
+ .dashboard tbody td:nth-child(3):before{content:'Ventas estimadas / 30 días'}
+ .dashboard tbody td:nth-child(4):before{content:'Ingresos estimados / 30 días'}
+ .dashboard tbody td:nth-child(5):before{content:'En el otro marketplace'}
+ .dashboard tbody td:nth-child(5){grid-column:2;grid-row:2}
+ .dashboard tbody td:last-child{position:absolute;top:12px;right:10px;padding:0}
+ .dashboard .product-cell{min-width:0;max-width:none;align-items:center;gap:14px;padding-right:32px}
+ .dashboard .photo-button{width:84px;height:96px;padding:5px;border-radius:9px}
+ .dashboard .real-product-photo{width:74px;height:85px}
+ .dashboard .product-name{font-size:15px;max-width:none}
+ .product-brand{font-size:9px}.dashboard .product-cell small{font-size:9px;overflow-wrap:anywhere}
+ .listing-link{min-height:40px;font-size:11px}.other-price{font-size:13px;min-height:32px;display:inline-flex;align-items:center}
+ .dashboard td.empty-state{grid-column:1/-1;padding-block:20px}
+ .real-detail-hero{grid-template-columns:1fr;gap:20px}
+ .detail-photo-wrap{height:210px}.detail-photo-wrap img{height:185px;width:200px}
+ .real-detail-hero h2{font-size:28px}.real-detail-hero .detail-save{width:100%;font-size:12px;min-height:44px}
+ .retailer-grid{grid-template-columns:1fr}.retailer-offer{padding:16px}.retailer-offer img{width:85px}.retailer-offer strong{font-size:21px}
+ .detail-estimates{grid-template-columns:1fr 1fr;gap:20px}.detail-estimates strong{font-size:19px}
+ .detail-estimates>div:last-child{grid-column:1/-1}.product-source{font-size:12px}.detail-caption{font-size:11px}
+ .hero-real-product{gap:15px;padding:18px 6px}.hero-real-product img{width:130px;height:140px}.hero-real-product>div>strong{font-size:22px}
+ .mock-row>.positive{display:none}.sidebar nav{gap:0}.side-item{padding-inline:8px;min-width:40px}.model-upload{padding:14px}
+}
+.real-rating{display:block;font-size:10px;color:#775e27;margin-top:7px}.real-rating>span:first-child{color:#d89426}.real-rating>span:last-child{color:var(--muted);font-size:9px}.observed-rank{color:#477b67!important}.visible-volume{font-size:15px;font-weight:600;white-space:nowrap}.scenario-value{font-size:12px;font-weight:550;white-space:nowrap}.dashboard .table-footer>span:first-child{max-width:570px}
+@media(max-width:560px){.dashboard tbody td:nth-child(2):before{content:'Precio consultado · MXN'}.dashboard tbody td:nth-child(3):before{content:'Compras visibles'}.dashboard tbody td:nth-child(4):before{content:'Valor orientativo*'}.real-rating{font-size:11px}.visible-volume{font-size:17px}.scenario-value{font-size:13px}}
+@media(min-width:851px){.dashboard .app-topbar{height:64px}.dashboard .workspace{padding-top:26px}.dashboard .app-heading .eyebrow{margin-bottom:7px}.dashboard .app-heading h1{font-size:29px}.dashboard .app-heading p{margin-top:7px}.dashboard .demo-banner{margin-top:18px;padding-block:9px}.dashboard .filter-panel{margin-top:16px;padding:16px 20px}.dashboard .market-tabs{margin-bottom:14px}.dashboard .market-tab{font-size:14px;padding:6px 15px}.dashboard .kpi-grid{margin-block:16px}.dashboard .kpi-grid article{padding:12px 16px}.dashboard .kpi-grid strong{font-size:23px;margin-top:2px}.dashboard .results-header{padding-block:18px}.dashboard td{padding-block:12px}}
+@media(max-width:560px){.dashboard tbody td.empty-state{position:static;grid-column:1/-1;width:100%}.dashboard .kpi-grid strong{font-size:22px}.dashboard .demo-banner{font-size:10px}}

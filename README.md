@@ -1,9 +1,13 @@
 # Nexo Commerce
 
-Demo pública de investigación de productos para Amazon México y Mercado Libre México.
+[Demo pública](https://gonzalosystems.github.io/nexo-commerce-demo/) de investigación de productos para Amazon y Mercado Libre México.
 
-Sitio estático en HTML, CSS y JavaScript. Abrir `index.html` o consultar GitHub Pages.
+Seis modelos reales, fotos locales y enlaces de publicación. Precios, valoraciones y contadores públicos observados el 28 de octubre de 2026. Son instantáneas, no un servicio en tiempo real. Amazon: compras del mes pasado cuando se publican; Mercado Libre: acumulados.
 
-Los productos, ventas, ingresos e históricos son ficticios. No hay conexión a cuentas reales ni extensión instalable.
+Valor orientativo = mínimo del contador público × precio consultado. No es facturación observada ni un mínimo de ingresos históricos.
 
-Los logos identifican a sus respectivos marketplaces; Nexo no está afiliado a ellos. Fuentes en `assets/FUENTES.txt`.
+`estimator.js` ajusta una ley de potencia con referencias observadas de Amazon México en CSV. Sin coeficientes universales, precisión comercial validada ni histórico de ventas inventado. El archivo se procesa en la pestaña. Plantilla: `calibracion.csv`.
+
+Pruebas de cálculo con datos sintéticos: `node --test tests/estimator.test.cjs`.
+
+La extensión es un concepto visual. Sin acceso a cuentas privadas ni backend. Logos e imágenes identifican a sus respectivos productos y titulares; Nexo no está afiliado con sus marcas. Fuentes en `assets/products/FUENTES.txt`.
