@@ -7,7 +7,7 @@ from .config import load_credentials,readiness,ConfigurationError
 from .pipeline import sync
 from .normalize import utc_now
 
-PUBLIC_FILES={'index.html','app.html','styles.css','app.js','catalog.js','catalog.json','estimator.js','runtime-config.js','calibracion.csv'}
+PUBLIC_FILES={'index.html','app.html','styles.css','app.js','catalog.js','catalog.json','estimator.js','filters.js','runtime-config.js','calibracion.csv'}
 
 def make_handler(store,site_root):
     root=Path(site_root).resolve()

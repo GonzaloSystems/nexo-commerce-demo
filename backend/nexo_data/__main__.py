@@ -3,11 +3,11 @@ from pathlib import Path
 from urllib.parse import urlencode
 from .config import ROOT,PROVIDER_KEYS,load_credentials,save_credentials,readiness,ConfigurationError
 from .transport import Transport,ProviderError
-from .providers import MARKETPLACE_MX
+from .providers import MARKETPLACE_MX,SpApiClient
 from .storage import Store
 from .pipeline import sync
 from .history import period_features
-from .normalize import utc_now,DataError
+from .normalize import utc_now,DataError,sp_product
 
 def default_catalog():
     choices=[ROOT.parent/'site/catalog.json',ROOT.parent/'catalog.json']
@@ -34,6 +34,7 @@ def main():
     c=sub.add_parser('configure');c.add_argument('provider',choices=list(PROVIDER_KEYS))
     s=sub.add_parser('sync');s.add_argument('--provider',choices=['auto','keepa','sp-api'],default='auto');s.add_argument('--asins',nargs='+');s.add_argument('--catalog',default=str(default_catalog()));s.add_argument('--days',type=int,default=180);s.add_argument('--offers',type=int,default=0)
     v=sub.add_parser('serve');v.add_argument('--site',default=str(ROOT.parent/'site' if (ROOT.parent/'site/app.html').exists() else ROOT.parent));v.add_argument('--catalog',default=str(default_catalog()));v.add_argument('--asins',nargs='+');v.add_argument('--provider',choices=['auto','keepa','sp-api'],default='auto');v.add_argument('--port',type=int,default=8787);v.add_argument('--sync-seconds',type=int,default=0);v.add_argument('--days',type=int,default=180)
+    q=sub.add_parser('search');q.add_argument('--keywords',nargs='+');q.add_argument('--asins',nargs='+');q.add_argument('--classification-id',nargs='+');q.add_argument('--brand',nargs='+');q.add_argument('--page-token');q.add_argument('--page-size',type=int,default=20);q.add_argument('--save',action='store_true')
     h=sub.add_parser('features');h.add_argument('--asin',required=True);h.add_argument('--category-id',required=True);h.add_argument('--start',required=True);h.add_argument('--end',required=True);h.add_argument('--provider',choices=['keepa','sp-api'],default='keepa')
     args=parser.parse_args()
     try:
@@ -49,6 +50,12 @@ def main():
                 values[name]=value
             save_credentials(values);print('Credenciales guardadas localmente con permisos 600. No se imprimen ni se suben a GitHub.');return 0
         store=Store()
+        if args.command=='search':
+            payload=SpApiClient(load_credentials()).search(args.keywords,args.asins,args.classification_id,args.brand,args.page_token,args.page_size)
+            stamp=utc_now();records=[sp_product({'catalog':item,'pricing_status':'not_requested'},stamp) for item in payload['items']]
+            if args.save:
+                for record in records:store.save(record)
+            print(json.dumps({'source':'sp-api','queried_at':stamp,'products':records,'pagination':payload.get('pagination',{}),'refinements':payload.get('refinements',{}),'number_of_results':payload.get('numberOfResults'),'note':'Catálogo actual; no devuelve ventas competidoras ni rangos de precio o unidades. Solo una página por llamada.'},ensure_ascii=False,indent=2));return 0
         if args.command=='sync':
             result=sync(store,asins_from(args),args.provider,args.days,args.offers);print(json.dumps(result,ensure_ascii=False,indent=2))
             return 0 if all(r['status'] in ('ok','authenticated_no_products') for r in result['results']) else 2

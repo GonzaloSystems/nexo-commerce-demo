@@ -45,3 +45,14 @@ El comando `features` necesita datos previamente almacenados de esa categoría. 
 GitHub Pages sigue mostrando el catálogo guardado: `runtime-config.js` tiene `apiBaseUrl:null`. El servidor local sirve ese archivo con origen relativo y habilita la lectura desde la API local. No publica datos ni compra nada automáticamente.
 
 Para nube: desplegar un backend con HTTPS y tareas programadas, migrar/persistir la base de datos, configurar secretos del alojamiento y acceso de usuarios; servir preferiblemente frontend/API en el mismo origen. El servidor de desarrollo no sustituye ese despliegue. Antes de un catálogo grande, añadir cola, presupuesto de tokens, reintentos diferidos por cuota, alertas y respaldo. El cliente actual limita los reintentos breves y los lotes a 100 ASIN; no es un rastreador masivo listo para producción.
+
+## Búsqueda oficial (29.10.2026)
+
+```sh
+python3 -m nexo_data search --keywords audifonos --brand Sony
+python3 -m nexo_data search --asins B0CFSCT8GQ B0C1HGKNG7
+```
+
+Con palabras clave: `--classification-id ID_NUMERICO` y `--brand NOMBRE`; paginación con `--page-token TOKEN` y `--page-size 20`. No mezclar identificadores con keywords/marca/categoría. `--save` guarda las fichas recibidas. No solicita ofertas por cada resultado ni inventa precios: se puede sincronizar después la selección. Es una herramienta del operador local, no un endpoint público sin control. No incorpora automáticamente fichas nuevas al catálogo visual de seis productos.
+
+18 pruebas sintéticas de backend superadas; la consulta real sin credenciales se detiene antes de enviar una petición. Los filtros del panel operan sobre los datos disponibles, no sobre todo Amazon. Alta y estado documentados en `alta-amazon.md`.

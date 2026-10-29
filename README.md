@@ -15,3 +15,5 @@ La extensión es un concepto visual. Sin acceso a cuentas privadas configurado. 
 ## Datos por API
 
 [Decisión, requisitos y costes](decision-apis.md). Clientes Keepa y Amazon SP-API, SQLite e interfaz local en [backend/README.md](backend/README.md). Sin credenciales ni productos recibidos por API hasta ahora. Las llamadas se realizan en el servidor, nunca desde JavaScript público. El estimador anterior se conserva.
+
+Filtros de investigación: categoría, marca, tipo, ASIN/lista, precio, reseñas y BSR. Buscan en el catálogo disponible; no se ha conectado todavía todo Amazon. [Alta y búsqueda SP-API](alta-amazon.md). Pruebas: `node --test tests/filters.test.cjs`.

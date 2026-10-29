@@ -36,6 +36,20 @@ class DataTests(unittest.TestCase):
   with self.assertRaises(ConfigurationError):KeepaClient({},t).products(['B000000001'])
   with self.assertRaises(ConfigurationError):SpApiClient({},t).product('B000000001')
   self.assertEqual(t.calls,[])
+ def test_sp_search_keywords_category_brand_and_pagination(self):
+  from urllib.parse import urlparse,parse_qs
+  t=FakeTransport([{'access_token':'TEST_TOKEN'},{'items':[],'pagination':{'nextToken':'PAGE_2'}}]);c=SpApiClient({'SP_API_CLIENT_ID':'TEST_ID','SP_API_CLIENT_SECRET':'TEST_SECRET','SP_API_REFRESH_TOKEN':'TEST_REFRESH'},t)
+  p=c.search(['audífonos'],classification_ids=['123'],brand_names=['Sony'],page_token='PAGE_1');q=parse_qs(urlparse(t.calls[-1][1]).query)
+  self.assertEqual(q['marketplaceIds'],[MARKETPLACE_MX]);self.assertEqual(q['classificationIds'],['123']);self.assertEqual(q['brandNames'],['Sony']);self.assertEqual(q['pageToken'],['PAGE_1']);self.assertEqual(p['pagination']['nextToken'],'PAGE_2');self.assertNotIn('TEST_SECRET',t.calls[-1][1])
+ def test_sp_search_asins_cannot_be_combined_with_keywords_or_category(self):
+  t=FakeTransport([]);c=SpApiClient({},t)
+  for params in [{'keywords':['audio'],'identifiers':['B000000001']},{'identifiers':['B000000001'],'classification_ids':['123']},{'keywords':['audio'],'page_size':21}]:
+   with self.assertRaises(ConfigurationError):c.search(**params)
+  self.assertEqual(t.calls,[])
+ def test_sp_search_missing_credentials_does_not_call_provider(self):
+  t=FakeTransport([])
+  with self.assertRaises(ConfigurationError):SpApiClient({},t).search(['audio'])
+  self.assertEqual(t.calls,[])
  def test_sp_token_reused_and_only_catalog_reads_after_token(self):
   t=FakeTransport([{'access_token':'TEST_TOKEN','expires_in':3600},{'asin':'B000000001'},{'asin':'B000000001'}]);c=SpApiClient({'SP_API_CLIENT_ID':'TEST_ID','SP_API_CLIENT_SECRET':'TEST_SECRET','SP_API_REFRESH_TOKEN':'TEST_REFRESH'},t,sleeper=lambda _:None);c.product('B000000001',False);c.product('B000000001',False);self.assertEqual([x[0] for x in t.calls],['POST','GET','GET']);self.assertIn('marketplaceIds='+MARKETPLACE_MX,t.calls[1][1]);self.assertNotIn('TEST_SECRET',t.calls[1][1])
  def test_offer_count_not_claimed_as_unique_seller_total(self):

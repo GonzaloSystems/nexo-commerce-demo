@@ -61,6 +61,34 @@ class SpApiClient:
         self.expires=time.monotonic()+max(0,int(data.get('expires_in',3600))-60)
         return self.token
 
+    def search(self, keywords=None, identifiers=None, classification_ids=None, brand_names=None, page_token=None, page_size=20):
+        """One official catalog page. No price/BSR-range server filter is invented."""
+        identifiers=list(identifiers or []);keywords=list(keywords or [])
+        if bool(identifiers)==bool(keywords):
+            raise ConfigurationError('Indica palabras clave o ASIN, en consultas separadas.')
+        if not 1<=page_size<=20 or len(keywords)>20 or any(not isinstance(k,str) or not k.strip() or len(k)>200 for k in keywords):
+            raise ConfigurationError('Máximo 20 palabras clave y 20 resultados por página.')
+        if identifiers:
+            identifiers=validate_asins(identifiers)
+            if len(identifiers)>20 or classification_ids or brand_names:
+                raise ConfigurationError('Hasta 20 ASIN por búsqueda; categoría y marca solo con palabras clave.')
+        if classification_ids and any(not str(c).isdigit() for c in classification_ids):
+            raise ConfigurationError('La categoría de Amazon debe indicarse mediante su identificador numérico.')
+        if brand_names and any(not isinstance(b,str) or not b.strip() or len(b)>200 for b in brand_names):
+            raise ConfigurationError('Marca de búsqueda no válida.')
+        if page_token and (not isinstance(page_token,str) or len(page_token)>4096):
+            raise ConfigurationError('Token de página no válido.')
+        params={'marketplaceIds':MARKETPLACE_MX,'includedData':'summaries,images,classifications,relationships,salesRanks','pageSize':page_size}
+        if identifiers:params.update(identifiers=','.join(identifiers),identifiersType='ASIN')
+        else:
+            params['keywords']=','.join(keywords)
+            if classification_ids:params['classificationIds']=','.join(map(str,classification_ids))
+            if brand_names:params['brandNames']=','.join(brand_names)
+        if page_token:params['pageToken']=page_token
+        data=self.transport.request('GET','https://sellingpartnerapi-na.amazon.com/catalog/2022-04-01/items?'+urlencode(params),{'x-amz-access-token':self.access_token()})
+        if not isinstance(data.get('items'),list):raise ProviderError('missing_catalog_items')
+        return data
+
     def product(self, asin, with_offers=True):
         validate_asins([asin])
         headers={'x-amz-access-token':self.access_token()}
