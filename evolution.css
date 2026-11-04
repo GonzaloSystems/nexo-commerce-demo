@@ -26,3 +26,11 @@
 @media(max-width:700px){.radar-carousel{width:340px;max-width:100%;margin-top:20px}.radar-stage{height:420px}.radar-card{left:50%;width:68%;top:18px}}
 @media(prefers-reduced-motion:reduce){.radar-card{will-change:auto}.radar-card .signal-image img{animation:none!important}}
 .radar-card .signal-top{justify-content:flex-start;gap:7px}.radar-card .signal-top .signal-live{margin:0!important}
+
+/* Selected: Ocho flotante. Constant opaque surfaces; depth uses overlap only. */
+.radar-stage{height:560px}
+.prism-landing .radar-card{width:60%;max-width:270px;top:58px;background:#f3f8fc;opacity:1;filter:none;backdrop-filter:none;box-shadow:0 16px 34px #15354d22}
+.prism-landing .radar-card .signal-image{background:#fff}
+.prism-landing .radar-card .signal-image img{animation:none;mix-blend-mode:normal}
+@media(max-width:1000px){.radar-stage{height:510px}}
+@media(max-width:700px){.radar-stage{height:465px}.prism-landing .radar-card{width:60%;top:54px}}

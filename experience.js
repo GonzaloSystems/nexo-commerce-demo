@@ -8,17 +8,15 @@
  stage.innerHTML=products.map((p,i)=>`<article class="signal-card radar-card" data-radar="${i}"><div class="signal-top"><span class="signal-live"></span> EN TU RADAR</div><div class="signal-image"><img src="${p.image}" alt="${esc(p.name)}" width="220" height="220"><span class="signal-category">${esc(p.category+' / '+p.brand)}</span></div><div class="signal-name"><div><small>UN PRODUCTO. DOS MERCADOS.</small><h2>${esc(p.name)}</h2></div><a href="app.html?asin=${p.markets.amazon.id}&v=20261104-research-3" aria-label="Explorar ${esc(p.name)}">↗</a></div><div class="signal-prices"><div><span>Amazon</span><strong>$${money(p.markets.amazon.price)}<span> MXN</span></strong></div><div><span>Mercado Libre</span><strong>$${money(p.markets.meli.price)}<span> MXN</span></strong></div></div><p class="signal-date">Muestra real · precios consultados el 28 oct. 2026</p></article>`).join('');
  const cards=[...stage.children],region=stage.closest('.radar-carousel'),toggle=document.getElementById('radar-motion-toggle'),reduced=matchMedia('(prefers-reduced-motion:reduce)');
  let angle=0,lastTime=null,lastPaint=0,paused=reduced.matches,keyboardFocus=false;
- const turn=Math.PI*2,period=21000;
+ const turn=Math.PI*2,period=19000;
  function state(){region.dataset.autoplay=String(!paused);toggle.textContent=paused?'Reanudar animación':'Pausar animación';toggle.setAttribute('aria-pressed',String(paused));}
  function paint(){
-  const radius=stage.clientWidth*.23;
+  const radius=Math.min(134,stage.clientWidth*.19);
   cards.forEach((card,i)=>{
    const a=angle+i*turn/cards.length,depth=Math.cos(a),front=(depth+1)/2;
-   const x=Math.sin(a)*radius,y=(1-depth)*-16+Math.sin(a*2)*9;
-   card.style.transform=`translate3d(calc(-50% + ${x.toFixed(2)}px),${y.toFixed(2)}px,${(depth*70).toFixed(2)}px) rotateY(${(-Math.sin(a)*15).toFixed(2)}deg) rotateZ(${(Math.sin(a)*7).toFixed(2)}deg) scale(${(.73+front*.27).toFixed(4)})`;
-   card.style.opacity=(.55+front*.45).toFixed(3);
-   card.style.zIndex=String(Math.round(100+depth*90));
-   card.style.filter=`blur(${((1-front)*.6).toFixed(2)}px)`;
+   const crossing=Math.sin(a*2),x=Math.sin(a)*radius*1.05,y=crossing*46;
+   card.style.transform=`translate3d(calc(-50% + ${x.toFixed(2)}px),${y.toFixed(2)}px,${(depth*36).toFixed(2)}px) rotateY(${(crossing*10).toFixed(2)}deg) rotateZ(${(crossing*6).toFixed(2)}deg) scale(${(.9+front*.1).toFixed(4)})`;
+   card.style.zIndex=String(Math.round(1000+depth*360));
   });
  }
  function frame(now){
