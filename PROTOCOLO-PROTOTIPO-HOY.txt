@@ -1,0 +1,43 @@
+NEXO PRISMA — 3 de noviembre de 2026
+
+Ejecución local, desde la carpeta api:
+python3 -m nexo_data serve --port 8787
+Abrir http://127.0.0.1:8787/app.html y pulsar Conectar API.
+
+Alternativa para configurar la clave mediante entrada oculta:
+python3 -m nexo_data configure rainforest
+
+El formulario local guarda RAINFOREST_API_KEY en api/.private/credentials.json (archivo600/carpeta700), excluido de git. Nunca pegar la clave en chat, HTML, capturas ni GitHub. El cliente no la recibe de vuelta. El servidor solo escucha en localhost; las operaciones de configuración/búsqueda requieren token de sesión local y validan origen/host. No es un backend de producción expuesto a Internet.
+
+El proveedor anuncia una prueba de 100 consultas sin tarjeta:
+https://trajectdata.com/discover-rainforest-api/
+Registro: https://app.rainforestapi.com/signup
+No se ha aprobado ningún plan de pago. No se ha realizado ningún registro/compra por parte del agente.
+
+Rainforest no es Amazon oficial: ofrece datos que obtiene mediante su propia infraestructura de extracción. Nexo utiliza su API y no automatiza páginas de Amazon. Se conserva la vía oficial SP-API para una autorización futura. La prueba gratuita no resuelve las condiciones de una futura redistribución comercial.
+
+Búsqueda implementada:
+- Palabra/frase: type=search, amazon_domain=amazon.com.mx, currency=MXN.
+- ASIN común B0... o ISBN10: type=product para consultar su ficha.
+- Sin consultas automáticas de productos extra, estimadores ajenos, stock, reseñas individuales ni seguimiento de vendedores.
+- Caché de la misma consulta 30min, sin petición adicional al proveedor.
+- Máximo20 búsquedas no cacheadas por arranque del servidor. No es la cuota total del proveedor: reiniciar no repone sus créditos.
+- Filtros en resultados recibidos: categoría y precio máximo. Patrocinado se identifica si el proveedor lo indica.
+- La posición del resultado de búsqueda no se trata como BSR. Precios USD no se renombran MXN. Datos ausentes conservan null y se muestran como sin dato.
+- Ventas/ingresos nuevos sin calcular; el estimador anterior se conserva sin atribuirle una calibración que no tiene. No usar estimaciones ajenas como ventas observadas.
+- La búsqueda nueva no sustituye el catálogo histórico de seis modelos. Resultados de descubrimiento guardados en caché local con fecha y recuperables al reiniciar; no es una base histórica completa.
+
+Referencias primarias:
+https://docs.trajectdata.com/rainforestapi/product-data-api/parameters/search
+https://docs.trajectdata.com/rainforestapi/product-data-api/parameters/product
+https://docs.trajectdata.com/rainforestapi/product-data-api/results/search
+https://docs.trajectdata.com/rainforestapi/product-data-api/results/product
+https://docs.trajectdata.com/rainforestapi/product-data-api/reference/amazon-domains
+
+Estado de verificación al preparar esta entrega:
+26 pruebas sintéticas del backend superadas, incluidas normalización, país/moneda, ausencia de ventas exactas, caché, presupuesto y falta de clave sin HTTP.
+HTTP local: búsqueda sin clave503, token incorrecto403, clave de formato inválido400. No se ha guardado ninguna clave de prueba ni generado datos ficticios en el catálogo.
+Interfaz escritorio e iPhone390px revisada, sin desbordamiento.
+Conexión autenticada verificada: búsqueda audífonos bluetooth en Amazon México, 48 productos recibidos el 03.11.2026 a las 23:35 de México (2026-11-04T05:35:02Z). Precio, nombre, ASIN e imagen disponibles en la muestra revisada. Una consulta al proveedor, 1 crédito usado y 99 restantes informados. Repetición idéntica servida desde caché. Cuenta creada y clave configurada localmente; no en git. Detalle sin secretos en prueba-conexion-real.json. Esto no valida el estimador de ventas.
+
+GitHub Pages aloja solo los archivos estáticos. Su buscador de muestra funciona y el apartado API indica que necesita la versión local. No publicar secretos, usar el servidor de desarrollo como producción ni confundir copia estática con acceso activo a Amazon.

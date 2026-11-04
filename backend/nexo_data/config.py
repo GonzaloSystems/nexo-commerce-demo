@@ -7,6 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 STATE_DIR = ROOT / '.private'
 CREDENTIALS = STATE_DIR / 'credentials.json'
 PROVIDER_KEYS = {
+    'rainforest': ('RAINFOREST_API_KEY',),
     'keepa': ('KEEPA_API_KEY',),
     'sp-api': ('SP_API_CLIENT_ID', 'SP_API_CLIENT_SECRET', 'SP_API_REFRESH_TOKEN'),
 }

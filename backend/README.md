@@ -56,3 +56,14 @@ python3 -m nexo_data search --asins B0CFSCT8GQ B0C1HGKNG7
 Con palabras clave: `--classification-id ID_NUMERICO` y `--brand NOMBRE`; paginación con `--page-token TOKEN` y `--page-size 20`. No mezclar identificadores con keywords/marca/categoría. `--save` guarda las fichas recibidas. No solicita ofertas por cada resultado ni inventa precios: se puede sincronizar después la selección. Es una herramienta del operador local, no un endpoint público sin control. No incorpora automáticamente fichas nuevas al catálogo visual de seis productos.
 
 18 pruebas sintéticas de backend superadas; la consulta real sin credenciales se detiene antes de enviar una petición. Los filtros del panel operan sobre los datos disponibles, no sobre todo Amazon. Alta y estado documentados en `alta-amazon.md`.
+
+
+## Prototipo Rainforest y Nexo Prisma (03.11.2026)
+
+Alternativa para probar búsqueda sin vendedor: `python3 -m nexo_data configure rainforest` (entrada oculta), o formulario **Conectar API** en la versión local. No contratar planes; el usuario solo ha aprobado prueba gratuita sin tarjeta. Rainforest anuncia 100 consultas, registro en https://app.rainforestapi.com/signup . No es Amazon oficial; el proveedor realiza extracción por su infraestructura.
+
+`discovery.py` añade búsqueda/ficha ASIN para amazon.com.mx y moneda MXN. `POST /api/search` se invoca únicamente mediante acción del usuario local con token de sesión; caché 30min y máximo20 búsquedas por arranque. `POST /api/settings/rainforest` guarda la clave sin devolverla. Ambas operaciones requieren origen/host y token locales; no hay CORS abierto. El token local va en runtime-config.js y no es la clave de proveedor. No exponer este servidor de desarrollo a Internet.
+
+Los resultados de descubrimiento se presentan aparte del catálogo anterior y permiten filtrar por categoría/precio. No crean históricos ni inventan unidades, BSR o precios ausentes. SP-API sigue disponible; si está configurada tiene prioridad oficial. La limitación de20 cuenta búsquedas de operador, no una garantía de consumo total del proveedor, y reiniciar no repone créditos externos.
+
+26 pruebas backend superadas con fixtures sintéticos, no prueba comercial ni autenticación. Conexión real verificada el 03.11.2026 (hora México): búsqueda audífonos bluetooth, 48 productos, 1 crédito y repetición cacheada. Clave solo local, fuera del repositorio. Caché normalizada en .private/discovery-cache.json; GET /api/discovery/latest recupera la búsqueda guardada sin llamar al proveedor. No es validación de ventas. El protocolo completo está en PROTOCOLO-PROTOTIPO-HOY.txt del paquete local.

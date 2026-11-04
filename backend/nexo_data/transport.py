@@ -6,7 +6,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-ALLOWED_HOSTS = {'api.keepa.com', 'api.amazon.com', 'sellingpartnerapi-na.amazon.com'}
+ALLOWED_HOSTS = {'api.rainforestapi.com', 'api.keepa.com', 'api.amazon.com', 'sellingpartnerapi-na.amazon.com'}
 MAX_BYTES = 32 * 1024 * 1024
 
 class ProviderError(Exception):
@@ -19,10 +19,11 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
         raise ProviderError('redirect_rejected', code)
 
 class Transport:
-    def __init__(self, opener=None, sleeper=time.sleep, retries=2):
+    def __init__(self, opener=None, sleeper=time.sleep, retries=2, timeout=15):
         self.opener = opener or urllib.request.build_opener(NoRedirect())
         self.sleeper = sleeper
         self.retries = retries
+        self.timeout = timeout
 
     def request(self, method, url, headers=None, body=None):
         parsed = urllib.parse.urlsplit(url)
@@ -35,7 +36,7 @@ class Transport:
         request = urllib.request.Request(url, data=body, headers=hdr, method=method)
         for attempt in range(self.retries + 1):
             try:
-                with self.opener.open(request, timeout=15) as response:
+                with self.opener.open(request, timeout=self.timeout) as response:
                     content = response.read(MAX_BYTES + 1)
                     if len(content) > MAX_BYTES:
                         raise ProviderError('response_too_large')
@@ -56,6 +57,7 @@ class Transport:
             except urllib.error.HTTPError as exc:
                 status = exc.code
                 retry = exc.headers.get('Retry-After', '')
+                exc.close()
                 try:
                     wait = max(0, int(retry)) if retry else 2 ** attempt
                 except ValueError:

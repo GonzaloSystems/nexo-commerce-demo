@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 import copy
 import json
 from pathlib import Path
@@ -26,10 +27,13 @@ class Store:
             ''')
         self.path.chmod(0o600)
 
+    @contextmanager
     def connect(self):
         db=sqlite3.connect(self.path,timeout=10)
         db.row_factory=sqlite3.Row
-        return db
+        try:
+            with db:yield db
+        finally:db.close()
 
     def save(self,record):
         source,asin,stamp=record['provider'],record['asin'],record['queried_at']

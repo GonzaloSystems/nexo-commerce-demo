@@ -78,7 +78,7 @@
    }
    const banner=document.querySelector('.demo-banner p');
    if(applied){syncFilterOptions();render();banner.textContent='Datos almacenados de API · '+applied+' productos actualizados. Cada fuente conserva sus fechas; los campos no disponibles quedan identificados.';}
-   else banner.textContent='Conexión con el servidor local preparada. Aún no hay productos recibidos por API; se conserva la muestra del 28 oct. 2026.';
+   else banner.textContent='Catálogo de muestra · 28 oct. 2026. Estos seis productos conservan su fecha original; las búsquedas nuevas de Amazon aparecen en su propia sección.';
   }catch(_){document.querySelector('.demo-banner p').textContent='El servidor de datos no está disponible. Se conserva el catálogo guardado; no se inventan nuevas observaciones.';}
   finally{clearTimeout(timeout);apiLoading=false;}
  }

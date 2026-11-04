@@ -14,6 +14,10 @@ La extensión es un concepto visual. Sin acceso a cuentas privadas configurado. 
 
 ## Datos por API
 
-[Decisión, requisitos y costes](decision-apis.md). Clientes Keepa y Amazon SP-API, SQLite e interfaz local en [backend/README.md](backend/README.md). Sin credenciales ni productos recibidos por API hasta ahora. Las llamadas se realizan en el servidor, nunca desde JavaScript público. El estimador anterior se conserva.
+[Decisión, requisitos y costes](decision-apis.md). Clientes Keepa y Amazon SP-API, SQLite e interfaz local en [backend/README.md](backend/README.md). Clave guardada solo en el equipo local y conexión Rainforest verificada el 03.11.2026: 48 productos de Amazon México. No se publican claves ni respuestas completas del proveedor. Las llamadas se realizan en el servidor, nunca desde JavaScript público. El estimador anterior se conserva.
 
 Filtros de investigación: categoría, marca, tipo, ASIN/lista, precio, reseñas y BSR. Buscan en el catálogo disponible; no se ha conectado todavía todo Amazon. [Alta y búsqueda SP-API](alta-amazon.md). Pruebas: `node --test tests/filters.test.cjs`.
+
+## Nexo Prisma (03.11.2026)
+
+Diseño azul/rosa con vidrio estriado, landing y panel responsive. Búsqueda nueva por texto/ASIN mediante el servidor local y Rainforest API o SP-API autorizada. La prueba externa requiere clave, nunca incluida en este repositorio. GitHub Pages mantiene el catálogo de muestra; la conexión real se activa en localhost. Detalles en `PROTOCOLO-PROTOTIPO-HOY.txt`.
