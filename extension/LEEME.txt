@@ -1,4 +1,4 @@
-Nexo para Chrome / Edge — prototipo local v0.3
+Nexo para Chrome / Edge — prototipo local v0.4
 
 La extensión integra dos secciones en las fichas de Amazon México: resumen horizontal encima del producto y análisis debajo de sus imágenes/descripción. Ocupan espacio real en la página y se desplazan con ella; no hay ventanas flotantes ni contenido superpuesto.
 
@@ -15,3 +15,5 @@ Verificación04.11.2026: actualización en Chrome real, ficha Sony B0CFSCT8GQ de
 
 Referencia de integración (implementación propia):
 https://kb.helium10.com/hc/en-us/articles/360049023813-How-Do-I-Install-and-Navigate-the-Chrome-Extension-An-Introduction-and-Overview
+
+v0.4: acceso con lupa «Explorar productos» abre el buscador local de Nexo, con categorías, subcategorías, palabras clave y tabla ordenable. No realiza consultas al abrirlo; recupera la última búsqueda guardada.

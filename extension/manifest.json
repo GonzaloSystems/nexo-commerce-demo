@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Nexo — Análisis en Amazon México",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Integra métricas y gráficas en las fichas de Amazon México con tu API local de Nexo.",
   "host_permissions": [
     "http://127.0.0.1:8787/*"

@@ -25,7 +25,7 @@ def rainforest_item(p,queried_at,detail=False):
     ranks=p.get('bestsellers_rank') or []
     if isinstance(ranks,dict):ranks=[ranks]
     ranks=[{'rank':int(number(r['rank'])),'category':str(r.get('category',''))} for r in ranks if isinstance(r,dict) and number(r.get('rank')) is not None and number(r['rank'])>0]
-    cats=[{'id':str(c.get('id','')),'name':str(c.get('name',''))} for c in p.get('categories',[]) if isinstance(c,dict)]
+    cats=[{'id':str(c.get('category_id') or c.get('id') or ''),'name':str(c.get('name',''))} for c in p.get('categories',[]) if isinstance(c,dict)]
     main=p.get('main_image') or {}
     photo=image_url(main.get('link') if isinstance(main,dict) else None) or image_url(p.get('image'))
     rating=number(p.get('rating'));reviews=number(p.get('ratings_total'))
@@ -55,13 +55,16 @@ def distribution(value):
 
 class RainforestClient:
     def __init__(self,credentials,transport=None):self.key=credentials.get('RAINFOREST_API_KEY');self.transport=transport or Transport(retries=0,timeout=45)
-    def search(self,query):
+    def search(self,query,category_id=None):
+        if category_id is not None and (not isinstance(category_id,str) or not re.fullmatch(r'\d{1,20}',category_id)):raise ConfigurationError('Categoría no válida.')
         query=query.strip()
-        if not query or len(query)>200:raise ConfigurationError('Escribe un producto o ASIN, con hasta 200 caracteres.')
+        if (not query and not category_id) or len(query)>200:raise ConfigurationError('Escribe un producto o ASIN, con hasta 200 caracteres.')
         if not self.key:raise ConfigurationError('Falta la clave Rainforest API; no se ha consultado Amazon.')
         is_asin=is_asin_query(query)
         params={'api_key':self.key,'type':'product' if is_asin else 'search','amazon_domain':AMAZON_MX,'currency':'MXN'}
-        params['asin' if is_asin else 'search_term']=query.upper() if is_asin else query
+        if is_asin:params['asin']=query.upper()
+        elif query:params['search_term']=query
+        if category_id and not is_asin:params['category_id']=category_id
         # Never request include_products_count, estimation or other paid extras.
         data=self.transport.request('GET','https://api.rainforestapi.com/request?'+urlencode(params))
         info=data.get('request_info') or {}
@@ -77,7 +80,7 @@ class RainforestClient:
             if r['asin'] not in seen:products.append(r);seen.add(r['asin'])
         return {'provider':'rainforest','products':products,'queried_at':stamp,'marketplace':'amazon.com.mx',
                 'credits_remaining':info.get('credits_remaining'),'credits_used_this_request':info.get('credits_used_this_request'),
-                'data_kind':'product' if is_asin else 'search','cached':False,'sales_note':'Señales públicas; las ventas e ingresos del modelo siguen pendientes de calibración.'}
+                'query':query,'category_id':category_id,'data_kind':'product' if is_asin else 'search','cached':False,'sales_note':'Señales públicas; las ventas e ingresos del modelo siguen pendientes de calibración.'}
 
     def offers(self,asin):
         if not ASIN_RE.fullmatch(asin):raise ConfigurationError('ASIN no válido.')
@@ -167,20 +170,21 @@ class DiscoveryService:
     def status(self):
         c=self.load();provider='sp-api' if all(c.get(k) for k in ['SP_API_CLIENT_ID','SP_API_CLIENT_SECRET','SP_API_REFRESH_TOKEN']) else 'rainforest' if c.get('RAINFOREST_API_KEY') else None
         return {'configured':provider is not None,'provider':provider,'requests_this_start':self.used,'request_limit_this_start':self.limit}
-    def search(self,query):
-        if not isinstance(query,str) or not query.strip() or len(query)>200:raise ConfigurationError('Escribe un producto o ASIN, con hasta 200 caracteres.')
+    def search(self,query,category_id=None):
+        if category_id is not None and (not isinstance(category_id,str) or not re.fullmatch(r'\d{1,20}',category_id)):raise ConfigurationError('Categoría no válida.')
+        if not isinstance(query,str) or (not query.strip() and not category_id) or len(query)>200:raise ConfigurationError('Escribe un producto o ASIN, con hasta 200 caracteres.')
         with self.lock:
             status=self.status();provider=status['provider']
             if not provider:raise ConfigurationError('Conecta Rainforest API o autoriza SP-API para buscar productos nuevos.')
-            key=(provider,query.strip().casefold());cached=self.cache.get(key)
+            key=(provider,query.strip().casefold()+('|category:'+category_id if category_id and not is_asin_query(query.strip()) else ''));cached=self.cache.get(key)
             if cached and time.time()-cached[0]<1800:return {**self.enrich(cached[1]),'cached':True}
             if self.used>=self.limit:raise ProviderError('local_request_budget_reached',429)
             self.used+=1;c=self.load()
-            if provider=='rainforest':result=RainforestClient(c).search(query)
+            if provider=='rainforest':result=RainforestClient(c).search(query,category_id) if category_id else RainforestClient(c).search(query)
             else:
                 client=SpApiClient(c);q=query.strip();stamp=utc_now()
                 if is_asin_query(q):items=[client.product(q.upper(),with_offers=False)['catalog']]
-                else:items=client.search(keywords=[q])['items']
+                else:items=client.search(keywords=[q] if q else None,classification_ids=[category_id] if category_id else None)['items']
                 products=[]
                 for item in items:
                     r=sp_product({'catalog':item,'pricing_status':'not_requested'},stamp)

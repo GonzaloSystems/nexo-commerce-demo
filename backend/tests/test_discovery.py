@@ -71,3 +71,22 @@ class OffersTests(unittest.TestCase):
   r=RainforestClient({'RAINFOREST_API_KEY':'TEST_ONLY'},t).offers('B000000001');self.assertEqual(r['offers'][0]['seller_name'],'Test Store');self.assertEqual(r['offers'][0]['price'],100);self.assertNotIn('units_30d',r['offers'][0]);self.assertIn('type=offers',t.calls[0][1])
  def test_cached_offers_do_not_replace_search(self):
   service=DiscoveryService(lambda:{'RAINFOREST_API_KEY':'TEST_ONLY'});service.cache[('rainforest','offers:B000000001')]=(9999999999,{'data_kind':'offers','offers':[]});self.assertTrue(service.offers('B000000001')['cached'])
+
+
+class CategorySearchTests(unittest.TestCase):
+ def test_category_only_search_uses_real_node_and_no_estimation_extras(self):
+  t=FakeTransport({'request_info':{'success':True},'search_results':[]})
+  result=RainforestClient({'RAINFOREST_API_KEY':'TEST_ONLY'},t).search('', '9687308011')
+  url=t.calls[0][1];self.assertIn('category_id=9687308011',url);self.assertIn('type=search',url);self.assertNotIn('include_products_count',url);self.assertEqual(result['category_id'],'9687308011')
+ def test_categories_separate_cache_and_keep_legacy_keyword_cache(self):
+  service=DiscoveryService(lambda:{'RAINFOREST_API_KEY':'TEST_ONLY'})
+  with patch('nexo_data.discovery.RainforestClient.search',return_value={'products':[],'provider':'rainforest','cached':False}) as call:
+   service.search('audio');service.search('audio','123');service.search('audio','456');self.assertTrue(service.search('audio','123')['cached']);self.assertEqual(call.call_count,3)
+ def test_invalid_category_does_not_consume_budget(self):
+  service=DiscoveryService(lambda:{'RAINFOREST_API_KEY':'TEST_ONLY'})
+  for value in ['123&api_key=x',123,'',True]:
+   with self.assertRaises(ConfigurationError):service.search('audio',value)
+  self.assertEqual(service.used,0)
+ def test_provider_category_ids_survive_normalization(self):
+  row=fixture();row['categories']=[{'category_id':'9687308011','name':'Audífonos'}]
+  self.assertEqual(rainforest_item(row,'2026-11-04T00:00:00Z')['categories'][0]['id'],'9687308011')

@@ -1,0 +1,28 @@
+{
+  "marketplace": "amazon.com.mx",
+  "source": "rainforest product categories B0CFSCT8GQ",
+  "observed_at": "2026-11-04",
+  "scope": "Categorías observadas; árbol parcial del prototipo.",
+  "nodes": [
+    {
+      "id": "9482558011",
+      "name": "Electrónicos",
+      "parent_id": null
+    },
+    {
+      "id": "24035342011",
+      "name": "Audífonos, auriculares y accesorios",
+      "parent_id": "9482558011"
+    },
+    {
+      "id": "9687308011",
+      "name": "Audífonos",
+      "parent_id": "24035342011"
+    },
+    {
+      "id": "18116974011",
+      "name": "On-Ear",
+      "parent_id": "9687308011"
+    }
+  ]
+}

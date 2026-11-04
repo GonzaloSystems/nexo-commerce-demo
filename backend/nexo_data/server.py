@@ -10,7 +10,7 @@ from .config import load_credentials,readiness,ConfigurationError
 from .pipeline import sync
 from .normalize import utc_now
 
-PUBLIC_FILES={'index.html','app.html','styles.css','prisma.css','app.js','catalog.js','catalog.json','estimator.js','filters.js','discovery.js','experience.js','insights.js','evolution.css','runtime-config.js','calibracion.csv','nexo-extension.zip'}
+PUBLIC_FILES={'index.html','app.html','styles.css','prisma.css','app.js','catalog.js','catalog.json','estimator.js','filters.js','discovery.js','experience.js','insights.js','evolution.css','runtime-config.js','calibracion.csv','nexo-extension.zip','research.css','research-filters.js','taxonomy.json'}
 
 def make_handler(store,site_root):
     root=Path(site_root).resolve()
@@ -43,7 +43,7 @@ def make_handler(store,site_root):
                     self.send(200,{'saved':True,'authenticated':False,'note':'Clave guardada localmente. La primera búsqueda verificará el acceso.'});return
                 if path=='/api/offers':self.send(200,discovery.offers(data.get('asin')));return
                 if path=='/api/product':self.send(200,discovery.detail(data.get('asin'),root/'catalog.json'));return
-                self.send(200,discovery.search(data.get('query')))
+                self.send(200,discovery.search(data.get('query'),data.get('category_id')))
             except ConfigurationError as e:self.send(503,{'error':'api_not_configured','message':str(e)})
             except ProviderError as e:self.send(502 if e.status!=429 else 429,{'error':e.code,'provider_status':e.status})
             except (ValueError,TypeError):self.send(400,{'error':'invalid_request'})
