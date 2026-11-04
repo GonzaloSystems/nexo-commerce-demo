@@ -12,12 +12,17 @@
 .extension-instructions{padding-left:22px;display:grid;gap:12px;font-size:12px;color:#52647b;margin-block:22px}.extension-test-status{font-size:10px!important;line-height:1.8;margin-top:20px!important;color:#52647b}
 .prism-landing main{overflow:clip}
 
-/* Automatic product orbit: pointer hover no longer stops the carousel. */
-.radar-card{transition:transform 1s cubic-bezier(.22,.7,.2,1),opacity 1s,filter 1s;backface-visibility:hidden;will-change:transform}
-.radar-card[data-position="0"]{transform:translate3d(0,0,35px) rotate(-1deg) rotateY(-3deg)}
-.radar-card[data-position="1"]{transform:translate3d(40px,-16px,-50px) rotate(10deg) rotateY(-12deg) scale(.91)}
-.radar-card[data-position="2"]{transform:translate3d(-34px,14px,-90px) rotate(-10deg) rotateY(12deg) scale(.88)}
-.radar-card[data-position="0"] .signal-image img{animation:nexo-product-float 5s ease-in-out infinite}
+/* Three levitating cards orbit continuously, without slide counters or arrows. */
+.radar-carousel{width:460px;max-width:100%;min-width:0;align-self:center}
+.radar-stage{height:535px;perspective:1400px;position:relative;isolation:isolate}
+.radar-card{width:66%;max-width:300px;left:50%;top:30px;right:auto;bottom:auto;transform-origin:center center;transition:none;will-change:transform;backface-visibility:visible;margin:0}
+.radar-card .signal-image img{animation:nexo-orbit-levitation 6s ease-in-out infinite}
+.radar-card:nth-child(2) .signal-image img{animation-delay:-2s}.radar-card:nth-child(3) .signal-image img{animation-delay:-4s}
 .radar-carousel[data-autoplay="false"] .signal-image img{animation-play-state:paused}
-@keyframes nexo-product-float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-8px) rotate(1.5deg)}}
-@media(prefers-reduced-motion:reduce){.radar-card{transition:opacity .15s;will-change:auto}.radar-card .signal-image img{animation:none!important}}
+.radar-motion-toggle{position:absolute;width:1px;height:1px;padding:0;border:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.radar-motion-toggle:focus-visible{position:relative;width:auto;height:auto;padding:8px 14px;border:1px solid #fff8;border-radius:6px;clip-path:none;color:white;background:#154b70;outline:2px solid white;margin-top:10px}
+@keyframes nexo-orbit-levitation{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@media(max-width:1000px){.radar-carousel{width:360px}.radar-stage{height:470px}.radar-card{left:50%;width:66%;max-width:270px}}
+@media(max-width:700px){.radar-carousel{width:340px;max-width:100%;margin-top:20px}.radar-stage{height:420px}.radar-card{left:50%;width:68%;top:18px}}
+@media(prefers-reduced-motion:reduce){.radar-card{will-change:auto}.radar-card .signal-image img{animation:none!important}}
+.radar-card .signal-top{justify-content:flex-start;gap:7px}.radar-card .signal-top .signal-live{margin:0!important}
