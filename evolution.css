@@ -11,3 +11,13 @@
 .seller-select{display:flex;flex-direction:column;gap:8px;font-size:11px;margin-top:15px}.seller-select select{padding:10px;border:1px solid #ddd9e8;border-radius:7px;background:white;font:inherit;color:#19374f}.seller-row{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid #e5e1ed;gap:15px}.seller-row strong{font-size:13px;font-weight:550}.seller-row small{font-size:10px;display:block;color:#627086;margin-top:5px}.seller-row>span{font-size:19px;font-weight:500}.discovery-local-filters{max-width:650px;justify-content:flex-end}.discovery-local-filters select{max-width:150px}
 .extension-instructions{padding-left:22px;display:grid;gap:12px;font-size:12px;color:#52647b;margin-block:22px}.extension-test-status{font-size:10px!important;line-height:1.8;margin-top:20px!important;color:#52647b}
 .prism-landing main{overflow:clip}
+
+/* Automatic product orbit: pointer hover no longer stops the carousel. */
+.radar-card{transition:transform 1s cubic-bezier(.22,.7,.2,1),opacity 1s,filter 1s;backface-visibility:hidden;will-change:transform}
+.radar-card[data-position="0"]{transform:translate3d(0,0,35px) rotate(-1deg) rotateY(-3deg)}
+.radar-card[data-position="1"]{transform:translate3d(40px,-16px,-50px) rotate(10deg) rotateY(-12deg) scale(.91)}
+.radar-card[data-position="2"]{transform:translate3d(-34px,14px,-90px) rotate(-10deg) rotateY(12deg) scale(.88)}
+.radar-card[data-position="0"] .signal-image img{animation:nexo-product-float 5s ease-in-out infinite}
+.radar-carousel[data-autoplay="false"] .signal-image img{animation-play-state:paused}
+@keyframes nexo-product-float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-8px) rotate(1.5deg)}}
+@media(prefers-reduced-motion:reduce){.radar-card{transition:opacity .15s;will-change:auto}.radar-card .signal-image img{animation:none!important}}
