@@ -21,3 +21,7 @@ Filtros de investigación: categoría, marca, tipo, ASIN/lista, precio, reseñas
 ## Nexo Prisma (03.11.2026)
 
 Diseño azul/rosa con vidrio estriado, landing y panel responsive. Búsqueda nueva por texto/ASIN mediante el servidor local y Rainforest API o SP-API autorizada. La prueba externa requiere clave, nunca incluida en este repositorio. GitHub Pages mantiene el catálogo de muestra; la conexión real se activa en localhost. Detalles en `PROTOCOLO-PROTOTIPO-HOY.txt`.
+
+## Análisis y extensión (04.11.2026)
+
+Diseño Prisma continuo, marca nexo y carrusel accesible de tres productos. Ficha local completa con rankings, contador público de compras, reparto de valoraciones y observaciones de precio/BSR. Ofertas y filtro de vendedores conocidos, sin afirmar censo o ventas privadas. Extensión local Chrome/Edge en `extension/` y `nexo-extension.zip`; pendiente instalación y prueba integral en Chrome. Puente HTTP verificado. Véase EVOLUCION-INTERFAZ.txt.

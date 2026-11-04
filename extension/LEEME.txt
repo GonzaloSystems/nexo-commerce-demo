@@ -1,0 +1,11 @@
+Nexo para Chrome / Edge — prototipo local v0.1
+
+Esta versión añade un panel a páginas de producto de Amazon México (rutas /dp/ASIN o /gp/product/ASIN). No se instala sola, no está publicada en una tienda, no es para Safari/iPhone y todavía no añade métricas a los listados de búsqueda.
+
+1. Mantén funcionando Nexo local en http://127.0.0.1:8787/ . La clave Rainforest ya configurada permanece solo allí.
+2. En Chrome abre chrome://extensions, activa Modo de desarrollador y pulsa Cargar descomprimida. Selecciona esta carpeta (extension).
+3. Abre una publicación de Amazon México. Aparece el panel Nexo en la derecha. Si la ficha está guardada, se muestra sin consultar al proveedor. Pulsa Consultar ficha para solicitar/actualizar explícitamente.
+
+La extensión obtiene el ASIN de la URL, no extrae datos de la página de Amazon. Los datos llegan desde nuestra API local. No pide cookies, contraseñas, historial o datos de compradores; no cambia precio, carrito ni compras. Su permiso de red está limitado al servidor local. Amazon recibe únicamente el panel visual insertado, no la clave del proveedor.
+
+Verificación: código y puente HTTP local probados; aún pendiente carga manual y prueba integral en Chrome real. No declarar que está instalada ni que se ha validado dentro de Amazon hasta hacerlo.

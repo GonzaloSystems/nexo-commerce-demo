@@ -1,0 +1,21 @@
+NEXO — 4 de noviembre de 2026
+
+Cambios:
+- Estilo Prisma continuo por toda la landing: fondo estriado, luces azul/rosa en esquinas, paneles translúcidos oscuros y texto claro. Entrada al hacer scroll con alternativa sin movimiento.
+- Marca superior simplificada a la palabra nexo, sin icono duplicado ni Commerce debajo.
+- Carrusel de tres productos reales Sony/JBL/Soundcore: rotación, anterior/siguiente y pausa, pausado con foco y reduced motion.
+- Analizar producto abre ficha propia. Reparto por estrellas, comparación de precio y BSR entre observaciones, rankings por categoría, ASIN padre y ofertas.
+- Compras del mes pasado proceden del umbral público de Amazon, no de un estimador calibrado. No se fabrican curvas diarias ni ventas exactas.
+- Explorador ordena por precio, valoraciones, volumen publicado y BSR disponible; filtro de vendedores conocidos a partir de ofertas consultadas. No es un ranking completo de todos los vendedores/productos de Amazon.
+
+Verificación de datos:
+Consulta product Sony B0CFSCT8GQ:1539MXN,BSR356Electrónicos y4On-Ear,2237valoraciones,400+comprados mes pasado,distribución por estrellas85/9/2/1/3%. Consulta de ofertas:una oferta recibida,Amazon,1539MXN. No equivale a un censo completo. Esas dos consultas nuevas consumieron2créditos; el proveedor informó97restantes. Las repeticiones de ficha y puente de extensión usan caché.
+Precio/gráficas:baseline manual28oct1559MXN/BSR318 y observaciones actuales por API1539MXN/BSR356. Observaciones guardadas, no serie diaria. La búsqueda original tiene48productos; no se han descargado48fichas completas automáticamente.
+
+Extensión:
+Carpeta extension/ y paquete nexo-extension.zip. Primera versión Chrome/Edge ManifestV3. Añade panel en fichas Amazon México /dp/ASIN y /gp/product/ASIN. ASIN tomado de URL; datos recibidos mediante servidor Nexo local. No extrae la página, ni guarda clave, cookies o contraseñas, ni cambia compras. Consulta inicial solo caché; consulta nueva explícita por botón.
+Puente HTTP local probado con Origin chrome-extension y token de sesión:200/fichaBSR356. Origen web ajeno:403. JavaScript comprobado y manifiesto revisado. Instalación y prueba integral dentro de Chrome pendientes; no afirmar que ya está instalada. No cubre listados Amazon ni Safari/iPhone.
+
+32 pruebas backend superadas. Carrusel y siguiente/pausa comprobados. Landing/ficha a390px sin desbordamiento. Nuevos recursos20261104-evo-1. Para probar ficha guardada: http://127.0.0.1:8787/app.html?analyze=B0CFSCT8GQ . Servidor local requerido. GitHub Pages sigue sin backend público.
+
+Objetivo independiente para otra sesión: OBJETIVO-ESTIMADOR.txt. Trabajar en modelo/ y nota propia; no tocar interfaz/API para evitar conflictos. No se ha creado sesión adicional ni activado un objetivo en otra conversación.

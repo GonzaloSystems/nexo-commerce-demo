@@ -42,3 +42,32 @@ class DiscoveryTests(unittest.TestCase):
  def test_asin_queries_use_product_and_untrusted_images_are_rejected(self):
   f=fixture();f['image']='https://example.com/track';t=FakeTransport({'request_info':{'success':True},'product':f});r=RainforestClient({'RAINFOREST_API_KEY':'TEST_ONLY'},t).search('B000000001');self.assertIn('type=product',t.calls[0][1]);self.assertIsNone(r['products'][0]['image_url'])
 if __name__=='__main__':unittest.main()
+
+class DetailTests(unittest.TestCase):
+ def test_monthly_threshold_not_exact_units(self):
+  from nexo_data.discovery import monthly_threshold
+  self.assertEqual(monthly_threshold('400+ comprados el mes pasado'),400)
+  self.assertEqual(monthly_threshold('1.5K+ bought in past month'),1500)
+  self.assertIsNone(monthly_threshold('not available'))
+ def test_real_detail_contract_includes_distribution_and_scoped_ranks(self):
+  f=fixture();f['recent_sales']='400+ comprados el mes pasado';f['bestsellers_rank']=[{'rank':356,'category':'Electrónicos'}];f['rating_breakdown']={'five_star':{'percentage':85,'count':1901}}
+  p=rainforest_item(f,'2026-11-03T23:00:00Z',True);self.assertEqual(p['monthly_units_min'],400);self.assertIsNone(p['units_30d']);self.assertEqual(p['rating_distribution'][0]['percentage'],85);self.assertEqual(p['ranks'][0]['rank'],356)
+ def test_detail_joins_baseline_without_replacing_missing_history(self):
+  service=DiscoveryService(lambda:{'RAINFOREST_API_KEY':'TEST_ONLY'})
+  record=rainforest_item(fixture(),'2026-11-03T23:00:00Z',True)
+  service.cache[('rainforest','b000000001')]=(9999999999,{'provider':'rainforest','products':[record],'marketplace':'amazon.com.mx','data_kind':'product'})
+  with tempfile.TemporaryDirectory() as td:
+   path=Path(td)/'catalog.json';path.write_text(json.dumps({'products':[{'markets':{'amazon':{'id':'B000000001','priceDate':'2026-10-28','price':1000,'bsr':200,'rankCategory':'Electrónicos'}}}]}))
+   result=service.detail('B000000001',path);self.assertEqual(len(result['observations']),2);self.assertEqual(result['observations'][0]['source'],'catálogo observado');self.assertEqual(service.cached_product('B000000001')['asin'],'B000000001')
+ def test_latest_search_does_not_turn_into_last_single_product(self):
+  service=DiscoveryService(lambda:{})
+  service.cache[('rainforest','audio')]=(1,{'products':[fixture()],'data_kind':'search'})
+  service.cache[('rainforest','b000000001')]=(2,{'products':[fixture()],'data_kind':'product'})
+  self.assertEqual(service.latest()['data_kind'],'search')
+
+class OffersTests(unittest.TestCase):
+ def test_offers_sellers_and_currency_are_scoped(self):
+  t=FakeTransport({'request_info':{'success':True},'offers':[{'seller':{'id':'SELLER_TEST','name':'Test Store'},'price':{'value':100,'currency':'MXN'},'condition':{'title':'Nuevo'}}]})
+  r=RainforestClient({'RAINFOREST_API_KEY':'TEST_ONLY'},t).offers('B000000001');self.assertEqual(r['offers'][0]['seller_name'],'Test Store');self.assertEqual(r['offers'][0]['price'],100);self.assertNotIn('units_30d',r['offers'][0]);self.assertIn('type=offers',t.calls[0][1])
+ def test_cached_offers_do_not_replace_search(self):
+  service=DiscoveryService(lambda:{'RAINFOREST_API_KEY':'TEST_ONLY'});service.cache[('rainforest','offers:B000000001')]=(9999999999,{'data_kind':'offers','offers':[]});self.assertTrue(service.offers('B000000001')['cached'])
