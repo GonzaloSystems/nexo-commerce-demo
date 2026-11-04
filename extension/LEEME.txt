@@ -1,4 +1,4 @@
-Nexo para Chrome / Edge — prototipo local v0.1
+Nexo para Chrome / Edge — prototipo local v0.2
 
 Esta versión añade un panel a páginas de producto de Amazon México (rutas /dp/ASIN o /gp/product/ASIN). No se instala sola, no está publicada en una tienda, no es para Safari/iPhone y todavía no añade métricas a los listados de búsqueda.
 
@@ -8,4 +8,6 @@ Esta versión añade un panel a páginas de producto de Amazon México (rutas /d
 
 La extensión obtiene el ASIN de la URL, no extrae datos de la página de Amazon. Los datos llegan desde nuestra API local. No pide cookies, contraseñas, historial o datos de compradores; no cambia precio, carrito ni compras. Su permiso de red está limitado al servidor local. Amazon recibe únicamente el panel visual insertado, no la clave del proveedor.
 
-Verificación: código y puente HTTP local probados; aún pendiente carga manual y prueba integral en Chrome real. No declarar que está instalada ni que se ha validado dentro de Amazon hasta hacerlo.
+Verificación 04.11.2026: instalada desde esta carpeta en Chrome, panel visible en Amazon México ASIN B0CFSCT8GQ, ficha guardada recibida sin consultas al proveedor, minimizar/reabrir y desplazamiento revisados. Ventas/ingresos y gráfica sin estimaciones quedan vacíos. La actualización explícita con consumo de proveedor no se ha probado en esta verificación.
+
+Interfaz v0.2: métricas sin datos quedan vacías (nunca cero). Ventas e ingresos estimados y gráfica de 30 días preparados, sin cifras ni curvas ficticias. El panel carga primero la ficha guardada; no hace consultas automáticas al proveedor. Permisos restringidos a rutas de producto Amazon México.

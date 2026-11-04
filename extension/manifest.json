@@ -1,1 +1,25 @@
-{"manifest_version":3,"name":"Nexo — Análisis en Amazon México","version":"0.1.0","description":"Muestra señales del producto dentro de Amazon México usando tu servidor local de Nexo.","host_permissions":["http://127.0.0.1:8787/*"],"background":{"service_worker":"worker.js"},"content_scripts":[{"matches":["https://www.amazon.com.mx/*"],"js":["panel.js"],"run_at":"document_idle"}]}
+{
+  "manifest_version": 3,
+  "name": "Nexo — Análisis en Amazon México",
+  "version": "0.2.0",
+  "description": "Muestra señales del producto dentro de Amazon México usando tu servidor local de Nexo.",
+  "host_permissions": [
+    "http://127.0.0.1:8787/*"
+  ],
+  "background": {
+    "service_worker": "worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.amazon.com.mx/dp/*",
+        "https://www.amazon.com.mx/*/dp/*",
+        "https://www.amazon.com.mx/gp/product/*"
+      ],
+      "js": [
+        "panel.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
